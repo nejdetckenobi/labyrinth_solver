@@ -1,30 +1,30 @@
-MAZE = ('#E................##/'
-        '#.######.########.##/'
-        '#.######.########.##/'
-        '#.######.########.##/'
-        '#.######.....e###.##/'
-        '#.######.########.##/'
-        '#.###e...####e###.##/'
-        '#.######......###.##/'
-        '#.#########e#####.##/'
-        '#.###############.##/'
-        '#.................##/'
-        '######.#######.#####/'
-        '######.#######.#####/'
-        '######.#######.#####/'
-        '###....###.....#####/'
-        '######.###.###.#####/'
-        '####...###..##.#####/'
-        '######.###.###....##/'
-        '######.#######.#####/'
-        '######.........#####/')
+MAZE = ('#E................##\n'
+        '#.######.########.##\n'
+        '#.######.########.##\n'
+        '#.######.########.##\n'
+        '#.######.....e###.##\n'
+        '#.######.########.##\n'
+        '#.###e...####e###.##\n'
+        '#.######......###.##\n'
+        '#.#########e#####.##\n'
+        '#.###############.##\n'
+        '#.................##\n'
+        '######.#######.#####\n'
+        '######.#######.#####\n'
+        '######.#######.#####\n'
+        '###....###.....#####\n'
+        '######.###.###.#####\n'
+        '####...###..##.#####\n'
+        '######.###.###....##\n'
+        '######.#######.#####\n'
+        '######.........#####\n')
 
 
 class Maze(object):
     def __init__(self, s, entrance_char='E', exit_char='e',
                  path_char='.', solid_chars='#', delimiter='/'):
         super(Maze, self).__init__()
-        self.tiles = s.strip('/').split(delimiter)
+        self.tiles = s.strip(delimiter).split(delimiter)
         self.entrance_char = entrance_char
         self.exit_char = exit_char
         self.solid_chars = solid_chars
@@ -85,11 +85,23 @@ class Maze(object):
         ss = self.solutions()
         return min(ss, key=lambda x: len(x))
 
+    def draw_path(self, path, mark):
+        path_map = self.tiles[:]
+        for point in path:
+            tile = list(path_map[point[1]])
+            tile[point[0]] = mark
+            tile = ''.join(tile)
+            path_map[point[1]] = tile
+        for tile in path_map:
+            print(tile)
+
 if __name__ == '__main__':
-    m = Maze(MAZE)
+    m = Maze(MAZE, delimiter='\n')
     print('Entrance:', m.entrance)
     print('Exit:', m.exit)
     ss = m.solutions()
     # for s in ss:
     #     print(s)
-    print('Optimum:', m.optimal_solution())
+    optimum = m.optimal_solution()
+    print('Optimum:', optimum)
+    m.draw_path(optimum[1:-1], 'o')

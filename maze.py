@@ -4,9 +4,9 @@ MAZE = ('#E................##\n'
         '#.######.########.##\n'
         '#.######.....e###.##\n'
         '#.######.########.##\n'
-        '#.###e...####e###.##\n'
+        '#.###....####e###.##\n'
         '#.######......###.##\n'
-        '#.#########e#####.##\n'
+        '#.#########.#####.##\n'
         '#.###############.##\n'
         '#.................##\n'
         '######.#######.#####\n'
@@ -83,7 +83,11 @@ class Maze(object):
 
     def optimal_solution(self):
         ss = self.solutions()
-        return min(ss, key=lambda x: len(x))
+        try:
+            optimal = min(ss, key=lambda x: len(x))
+        except ValueError:
+            raise Exception('No exit points.')
+        return optimal
 
     def draw_path(self, path, mark):
         path_map = self.tiles[:]
